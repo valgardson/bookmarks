@@ -1,11 +1,10 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Karla&display=swap');
 
 :root {
   --primary-color: rgb(61,25,100);
   --background-div-color: rgb(192, 33, 216, 0.1);
-  --background-div-hover-color: rgba(0, 0, 0, 0.4);
-  --background-overlay: rgb(0,0,0,.05);
+  --background-div-hover-color: rgba(0, 0, 0, 0.2);
+  --background-overlay: rgb(0,0,0,.2);
   --border-radius: 5px;
 }
 
@@ -18,9 +17,11 @@ html {
 body {
   margin: 0;
   font-family: Karla, sans-serif;
+  font-size: .85rem;
   min-height: 100vh;
   background-image: url('./planets.png');
-  background: linear-gradient(to top, var(--background-overlay), var(--background-overlay)),
+  background: linear-gradient(to top, var(--background-overlay),
+   var(--background-overlay)),
    url('./planets.png') no-repeat top center;
   background-size: cover;
   position: relative;
@@ -31,7 +32,6 @@ body {
   align-items: center;
   flex-flow: row wrap; 
   max-width: 700px;
-  max-height: 1500px;
   /* margin: auto auto; */
   position: absolute;
   top: 50%;
@@ -67,11 +67,13 @@ body {
   gap: 10px;
   justify-content: center;
   flex-wrap: wrap;
+  text-align: center;
+  
 }
 
 .bookmark-container {
-  height: 100px;
-  width: 110px;
+  height: 4.75rem;
+  width: 5.25rem;
   border-radius: 5px;
   padding: 5px 5px;
   cursor: pointer;
@@ -88,7 +90,10 @@ body {
   justify-content: center; 
   margin: auto;
   z-index: -2;
+  margin-top:-.625rem;
 }
+
+
 
 .x-container {
   display: flex;
@@ -98,19 +103,19 @@ body {
 
 .fa-xmark {
   cursor: pointer;
-  color:rgb(60, 59, 59, 0);
+  color:rgb(222, 222, 222, 0);
   z-index: 2;
   transition: .5s ease-in-out;
 }
 
 .bookmark-container:hover .fa-xmark {
-  color:rgba(222, 222, 222, .7);
+  color:rgb(222, 222, 222, .7);
 }
 
 .fa-xmark:hover {
   z-index: 5;
   /* TODO: change when hover directly over x? */
-  color:rgb(218, 25, 25);
+  color:rgb(9, 65, 249);
   transform: rotate(90deg);
 }
 
@@ -121,10 +126,10 @@ a:visited {
 }
 
 .fav-circle {
-  height: 45px;
-  width: 45px;
+  height: 2rem;
+  width: 2rem;
   border-radius: 50%;
-  background: rgb(255, 255, 255);
+  background: whitesmoke;
   margin: 0px auto 10px;
   display: flex;
   justify-content: center;
@@ -132,12 +137,15 @@ a:visited {
 }
 
 .fav-circle img {
-  height: 30px;
+  height: 1.2rem;
 
 }
 
 .name {
-  margin: auto;
+  /* margin: auto; */
+  white-space:nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 
@@ -177,18 +185,17 @@ a:visited {
 
 .close-icon {
   float: right;
-  color: white;
-  font-size: 24px;
+  font-size: .8rem;
   position: relative;
-  top: 13px;
-  right: 13px;
+  top: -.3rem;
+  right: -0.1rem;
   cursor: pointer;
 }
 
 .modal-header {
   background: var(--primary-color);
   color: white;
-  padding: 15px;
+  padding: .9rem 1.25rem;
 }
 
 h3 {
@@ -196,7 +203,7 @@ h3 {
 }
 
 .modal-content {
-  padding: 20px;
+  padding: 1.25rem;
   background: whitesmoke;
 }
 
@@ -222,8 +229,8 @@ button {
   cursor: pointer;
   color: white;
   background: var(--primary-color);
-  height: 30px;
-  width: 100px;
+  height: 1.875rem;
+  width: 6.25rem;
   border: none;
   border-radius: var(--border-radius);
   margin-top: 10px;
@@ -235,11 +242,4 @@ button:hover {
 
 button:focus {
   outline: none;
-}
-
-/* Media Query: Large Smartphone (vertical) */
-@media screen and (max-width: 600px) {
-  .container {
-    flex-direction: column;
-  }
 }
