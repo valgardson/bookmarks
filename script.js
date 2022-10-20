@@ -52,7 +52,7 @@ function buildBookmarks() {
     xContainer.classList.add('x-container');
 		// Close Icon
 		const closeIcon = document.createElement('i');
-		closeIcon.classList.add('fas', 'fa-xmark');
+		closeIcon.classList.add('fas', 'fa-xmark', 'close-icon');
 		closeIcon.setAttribute('title', 'Delete Bookmark');
 		closeIcon.setAttribute('onclick', `deleteBookmark('${id}')`);
     // anchor
@@ -76,6 +76,7 @@ function buildBookmarks() {
 		const linkName = document.createElement('div');
 		linkName.classList.add('name');
     linkName.textContent = name; 
+		linkName.setAttribute('title', name);
 
 		// Append to bookmarks container
     favCircle.append(favicon);
