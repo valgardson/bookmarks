@@ -1,149 +1,76 @@
-const modal = document.getElementById('modal');
-const modalShow = document.getElementById('show-modal');
-const modalClose = document.getElementById('close-modal');
-const bookmarkForm = document.getElementById('bookmark-form');
-const websiteNameEl = document.getElementById('website-name');
-const websiteUrlEl = document.getElementById('website-url');
-const bookmarksContainer = document.getElementById('bookmarks-container');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookmarks</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <!-- bookmarks -->
+    <div class="bookmark-grid">
+        <div class="container" id="bookmarks-container"></div>
+        <!-- Open Modal -->
+        <div class="add-bookmark-container" id="show-modal">
+            <p>Add bookmark</p>
+        </div>
+    </div>
 
-let bookmarks = {};
+    <!-- modal -->
+    <div class="modal-container" id="modal">
+        <div class="modal">
+            <i class="fas fa-times close-icon" id="close-modal"></i>
+            <div class="modal-header">
+                <h3>Add Bookmark</h3>
+            </div>
+            <div class="modal-content">
+                <form id="bookmark-form">
+                    <!-- website name -->
+                    <div class="form-group">
+                        <label for="website-name" class="form-label">Website Name</label>
+                        <input type="text" class="form-input" id="website-name">
+                    </div>
+                    <!-- website URL -->
+                    <div class="form-group">
+                        <label for="website-url" class="form-label">Website URL</label>
+                        <input type="text" class="form-input" id="website-url">
+                    </div>  
+                    <button type="submit">Save</button>                  
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Script -->
+    <script src="script.js"></script>
+</body>
+</html>
 
-// Show Modal, Focus on Input
-function showModal() {
-	modal.classList.add('show-modal');
-	websiteNameEl.focus();
-}
 
-// Modal Event Listeners
-modalShow.addEventListener('click', showModal);
-modalClose.addEventListener('click', () => modal.classList.remove('show-modal'));
-window.addEventListener('click', (e) => (e.target === modal ? modal.classList.remove('show-modal') : false));
-
-// Validate Form
-function validate(nameValue, urlValue) {
-	const expression = /(https)?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/g;
-	const regex = new RegExp(expression);
-	if (!nameValue || !urlValue) {
-		alert('Please submit values for both fields.');
-		return false;
-	}
-	if (!urlValue.match(regex)) {
-		alert('Please provide a valid web address.');
-		return false;
-	}
-	// Valid
-	return true;
-}
-
-// Build Bookmarks
-function buildBookmarks() {
-	// Remove all bookmark elements
-	bookmarksContainer.textContent = '';
-	// Build items
-	Object.keys(bookmarks).forEach((id) => {
-
-		const { name, url } = bookmarks[id];
-
-    // bookmark-container
-    const bookmarkContainer = document.createElement('div');
-    bookmarkContainer.classList.add('bookmark-container');
-    // x-container
-    const xContainer = document.createElement('div');
-    xContainer.classList.add('x-container');
-		// Close Icon
-		const closeIcon = document.createElement('i');
-		closeIcon.classList.add('fas', 'fa-xmark', 'close-icon');
-		closeIcon.setAttribute('title', 'Delete Bookmark');
-		closeIcon.setAttribute('onclick', `deleteBookmark('${id}')`);
-    // anchor
-		const link = document.createElement('a');
-		link.setAttribute('href', `${url}`);
-		link.setAttribute('target', '_blank');
-		// Item
-		const item = document.createElement('div');
-		item.classList.add('item');
-    // fav-img
-    const favImg = document.createElement('div');
-    favImg.classList.add('fav-img');
-    // fav-circle
-    const favCircle = document.createElement('div');
-    favCircle.classList.add('fav-circle');
-		// Favicon
-		const favicon = document.createElement('img');
-		favicon.setAttribute('src', `https://s2.googleusercontent.com/s2/favicons?domain=${url}`);
-		favicon.setAttribute('alt', 'Favicon');
-		// link name
-		const linkName = document.createElement('div');
-		linkName.classList.add('name');
-    linkName.textContent = name; 
-		linkName.setAttribute('title', name);
-
-		// Append to bookmarks container
-    favCircle.append(favicon);
-    favImg.append(favCircle);
-		item.append(favImg, linkName);
-    link.append(item);
-    xContainer.append(closeIcon);
-    bookmarkContainer.append(xContainer, link);
-		bookmarksContainer.appendChild(bookmarkContainer);
-	});
-}
-
-// Fetch bookmarks
-function fetchBookmarks() {
-	// Get bookmarks from localStorage if available
-	if (localStorage.getItem('bookmarks')) {
-		bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
-	} else {
-		// Create bookmarks object in localStorage
-		const id = `http://jacinto.design`
-		bookmarks[id] = {
-			name: 'Jacinto Design',
-			url: 'http://jacinto.design',
-		}
-
-		localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-	}
-	buildBookmarks();
-}
-
-// Delete Bookmark
-function deleteBookmark(id) {
-	// Loop through the bookmarks array
-	if (bookmarks[id]) {
-		delete bookmarks[id]
-	}
-	// Update bookmarks array in localStorage, re-populate DOM
-	localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-	fetchBookmarks();
-}
-
-function storeBookmark(e) {
-	e.preventDefault();
-	const nameValue = websiteNameEl.value;
-	let urlValue = websiteUrlEl.value;
-	if (!(urlValue.includes('http://') || urlValue.includes('https://'))) {
-		urlValue = `https://${urlValue}`;
-	}
-	// Validate
-	if (!validate(nameValue, urlValue)) {
-		return false;
-	}
-	// Set bookmark object, add to array
-	const bookmark = {
-		name: nameValue,
-		url: urlValue,
-	};
-	bookmarks[urlValue] = bookmark;
-	// Set bookmarks in localStorage, fetch, reset input fields
-	localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-	fetchBookmarks();
-	bookmarkForm.reset();
-	websiteNameEl.focus();
-}
-
-// Event Listener
-bookmarkForm.addEventListener('submit', storeBookmark);
-
-// On Load, Fetch Bookmarks
-fetchBookmarks();
+<!-- <div class="item">
+    <i class="fa-solid fa-xmark" id="delete-bookmark" title="Delete Bookmark"></i>
+    <div class="name">
+        <img src="https://s2.googleusercontent.com/s2/favicons?domain=www.jacinto.design" 
+            alt="Favicon">
+        <a href="https://jacinto.design" target="_blank">Jacinto Design</a>
+    </div>
+</div>
+<div class="item">
+    <i class="fa-solid fa-xmark" id="delete-bookmark" title="Delete Bookmark"></i>
+    <div class="name">
+        <img src="https://s2.googleusercontent.com/s2/favicons?domain=www.jacinto.design" 
+            alt="Favicon">
+        <a href="https://jacinto.design" target="_blank">Jacinto Design</a>
+    </div>
+</div>
+<div class="item">
+    <i class="fa-solid fa-xmark" id="delete-bookmark" title="Delete Bookmark"></i>
+    <div class="name">
+        <img src="https://s2.googleusercontent.com/s2/favicons?domain=www.jacinto.design" 
+            alt="Favicon">
+        <a href="https://jacinto.design" target="_blank">Jacinto Design</a>
+    </div>
+</div>
+</div> -->
