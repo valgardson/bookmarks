@@ -115,8 +115,7 @@ body {
 .fa-xmark:hover {
   z-index: 5;
   /* TODO: change when hover directly over x? */
-  color:rgb(9, 65, 249);
-  transform: rotate(90deg);
+  /* transform: rotate(90deg); */
 }
 
 a:link,
@@ -147,7 +146,6 @@ a:visited {
   text-overflow: ellipsis;
   overflow: hidden;
 }
-
 
 /* modal */
 .modal-container {
@@ -183,6 +181,9 @@ a:visited {
   }
 }
 
+/* close-icon effects all the x on modal and bookmark items
+I should rename them or specify closer what these are. 
+That is why I used the id close-modal to fix up the modal close-icon */
 .close-icon {
   float: right;
   font-size: .8rem;
@@ -190,6 +191,20 @@ a:visited {
   top: -.3rem;
   right: -0.1rem;
   cursor: pointer;
+}
+
+.bookmark-container .close-icon:hover {
+  /* filter: brightness(130%);  */
+  color: white;
+}
+
+#close-modal {
+  float: right;
+  font-size: 1rem;
+  position: relative;
+  top: 0.3rem;
+  right: 0.5rem;
+  cursor: pointer; 
 }
 
 .modal-header {
@@ -237,7 +252,7 @@ button {
 }
 
 button:hover {
-  filter: brightness(110%);
+  filter: brightness(115%);
 }
 
 button:focus {
